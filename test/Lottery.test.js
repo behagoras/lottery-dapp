@@ -26,16 +26,32 @@ describe('Lottery contract', () => {
   it('should deploy contract', () => {
     assert.ok(lottery.options.address)
   })
+
   it('should allows one account to enter', async () => {
     await lottery.methods.enter().send({
-      from: managerAccount,
+      from: accounts[1],
       value: web3.utils.toWei('0.02', 'ether')
     })
-
     const players = await lottery.methods.getPlayers().call({
       from: managerAccount
     })
-    assert.deepStrictEqual(managerAccount, players[0])
+    assert.deepStrictEqual(accounts[1], players[0])
     assert.deepStrictEqual(players.length, 1)
+  })
+
+  it('should allows multiple account to enter', async () => {
+    const multiplePlayers = accounts.filter((_, index) => index >= 1 && index <= 3)
+    await Promise.all(multiplePlayers.map(async (account) => {
+      await lottery.methods.enter().send({
+        from: account,
+        value: web3.utils.toWei('0.02', 'ether')
+      })
+    }))
+    const players = await lottery.methods.getPlayers().call({
+      from: managerAccount
+    })
+
+    assert.deepStrictEqual(multiplePlayers, players)
+    assert.deepStrictEqual(players.length, 3)
   })
 })
