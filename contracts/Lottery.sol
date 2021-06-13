@@ -15,13 +15,18 @@ contract Lottery {
     function random() private view returns (uint) {
         return uint(keccak256(block.difficulty, now, players));
     }
-    function pickWinner() public restricted {
+    function pickWinnerWithCommissions() public restricted {
         uint index = random() % players.length;
         winner = players[index];
         uint commission = this.balance * 1 / 10;
         uint winnerAmount = this.balance * 9 / 10;
         players[index].transfer(winnerAmount);
         winner.transfer(winnerAmount);
+        players = new address[](0);
+    }
+    function pickWinner() public restricted {
+        uint index = random() % players.length;
+        players[index].transfer(this.balance);
         players = new address[](0);
     }
     modifier restricted() {
