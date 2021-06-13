@@ -24,8 +24,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "yarn run test:contracts && yarn run test:frontend",
     "test:contracts": "mocha",
+    "test:frontend": "react-scripts test --watchAll=false",
+    "test:frontend:watch": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
