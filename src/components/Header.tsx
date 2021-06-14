@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <ButtonGroup variant="contained" color="secondary">
       <Link to="/"><Button>Home</Button></Link>
-      <Link to="/enter"><Button>enter</Button></Link>
+      <Link to="/enter"><Button>Lottery</Button></Link>
     </ButtonGroup>
   )
 }
