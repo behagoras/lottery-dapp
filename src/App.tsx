@@ -1,42 +1,25 @@
+import { Container } from '@material-ui/core'
 import React from 'react'
 import {
-  BrowserRouter as Router, Link, Route, Switch,
+  BrowserRouter as Router,
 } from 'react-router-dom'
 import './App.css'
+import Header from './components/Header'
+import Routes from './components/Routes'
+import web3 from './utils/web3'
 
-function Home() {
-  return <h2>Home</h2>
-}
+console.log(web3.version)
 
-function About() {
-  return <h2>About</h2>
-}
+web3.eth.getAccounts().then(console.log)
 
-function App() {
+export default function App() : JSX.Element {
   return (
     <Router>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-        </ul>
-
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
+      <Container fixed>
+        <Header />
+        <Routes />
+      </Container>
     </Router>
-
   )
 }
 
-export default App
