@@ -1,11 +1,13 @@
 import { Card, CardContent, TextField, Typography } from '@material-ui/core'
 import Alert, { Color } from '@material-ui/lab/Alert'
-import { Field, Formik } from 'formik'
+import { Field, Formik, FormikProps } from 'formik'
 import React, { ReactElement } from 'react'
+import { useFetchInitialData } from '../contexts/UserContext'
 import lottery from '../utils/lottery'
 import web3 from '../utils/web3'
 
 export default function LotteryForm(): ReactElement {
+  const fetchInitialData = useFetchInitialData()
   return (
     <Formik
       initialValues={{
@@ -25,13 +27,15 @@ export default function LotteryForm(): ReactElement {
           })
           actions.setFieldValue('loading', false)
           actions.setFieldValue('message', { message: 'You have being entered to the lottery!', severity: 'success' })
+          await fetchInitialData()
+
         } catch (error) {
           actions.setFieldValue('loading', false)
           actions.setFieldValue('message', { message: 'Error!', severity: 'error' })
         }
       }}
     >
-      {(formikProps) => {
+      {(formikProps:FormikProps<any>) => {
         const { values } = formikProps
         return (
           <Card>
