@@ -4,7 +4,7 @@ const Web3 = require('web3')
 const { describe, it, beforeEach } = require('mocha')
 
 // the actual contract
-const { interface: _interface, bytecode } = require('../compile.js')
+const { abi, bytecode } = require('../compile.js')
 
 // create a new instance of web3 connected to a new network
 const web3 = new Web3(ganache.provider())
@@ -18,7 +18,7 @@ beforeEach(async () => {
   // eslint-disable-next-line prefer-destructuring
   managerAccount = accounts[0]
   lottery = await new web3.eth
-    .Contract(JSON.parse(_interface))
+    .Contract(abi)
     .deploy({ data: bytecode })
     .send({ from: accounts[0], gas: '1000000' })
 })
@@ -30,7 +30,7 @@ describe('Lottery contract', () => {
     })
   })
 
-  describe('Happy path', () => {
+  describe('Happy path', async () => {
     it('should allows one account to enter', async () => {
       await lottery.methods.enter().send({
         from: accounts[1],
