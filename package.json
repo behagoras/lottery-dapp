@@ -34,8 +34,11 @@
     "deploy:contracts": "node deploy.js",
     "test:frontend": "react-scripts test --watchAll=false",
     "test:frontend:watch": "react-scripts test",
-    "lint": "eslint ./src --ext .js,.ts,.tsx",
-    "lint:fix": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint:frontend": "eslint ./src --ext .js,.ts,.tsx",
+    "lint:frontend:fix": "eslint ./src --ext .js,.ts,.tsx --fix",
+    "lint:tests": "eslint ./test --ext .js,.ts,.tsx",
+    "lint:tests:fix": "eslint ./test --ext .js,.ts,.tsx --fix",
+    "lint:fix": "eslint ./ --ext .js,.ts,.tsx --fix",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
