@@ -1,6 +1,6 @@
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const Web3 = require('web3')
-const { interface: _interface, bytecode } = require('./compile')
+const { interface: _interface, bytecode } = require('./compile.js')
 
 const provider = new HDWalletProvider(
   'flock minimum square actor hospital road picture spy ball achieve net blood',

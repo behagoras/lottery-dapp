@@ -4,7 +4,7 @@ const Web3 = require('web3')
 const { describe, it, beforeEach } = require('mocha')
 
 // the actual contract
-const { interface: _interface, bytecode } = require('../compile')
+const { interface: _interface, bytecode } = require('../compile.js')
 
 // create a new instance of web3 connected to a new network
 const web3 = new Web3(ganache.provider())
@@ -15,6 +15,7 @@ let managerAccount
 
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts()
+  // eslint-disable-next-line prefer-destructuring
   managerAccount = accounts[0]
   lottery = await new web3.eth
     .Contract(JSON.parse(_interface))
@@ -33,10 +34,10 @@ describe('Lottery contract', () => {
     it('should allows one account to enter', async () => {
       await lottery.methods.enter().send({
         from: accounts[1],
-        value: web3.utils.toWei('0.02', 'ether')
+        value: web3.utils.toWei('0.02', 'ether'),
       })
       const players = await lottery.methods.getPlayers().call({
-        from: managerAccount
+        from: managerAccount,
       })
       assert.deepStrictEqual(accounts[1], players[0])
       assert.deepStrictEqual(players.length, 1)
@@ -48,12 +49,12 @@ describe('Lottery contract', () => {
       await Promise.all(multiplePlayers.map(async (account) => {
         await lottery.methods.enter().send({
           from: account,
-          value: web3.utils.toWei('0.02', 'ether')
+          value: web3.utils.toWei('0.02', 'ether'),
         })
       }))
 
       const players = await lottery.methods.getPlayers().call({
-        from: managerAccount
+        from: managerAccount,
       })
 
       assert.deepStrictEqual(multiplePlayers, players)
@@ -65,17 +66,17 @@ describe('Lottery contract', () => {
       const player = accounts[1]
       await lottery.methods.enter().send({
         from: player,
-        value: web3.utils.toWei('2', 'ether')
+        value: web3.utils.toWei('2', 'ether'),
       })
       await lottery.methods.enter().send({
         from: account,
-        value: web3.utils.toWei('0.02', 'ether')
+        value: web3.utils.toWei('0.02', 'ether'),
       })
       await lottery.methods.pickWinner().send({
-        from: managerAccount
+        from: managerAccount,
       })
       const winner = await lottery.methods.winner().call({
-        from: managerAccount
+        from: managerAccount,
       })
       assert.deepStrictEqual(winner, player)
     })
@@ -84,20 +85,20 @@ describe('Lottery contract', () => {
       const player = accounts[1]
       await lottery.methods.enter().send({
         from: player,
-        value: web3.utils.toWei('2', 'ether')
+        value: web3.utils.toWei('2', 'ether'),
       })
       await lottery.methods.enter().send({
         from: player,
-        value: web3.utils.toWei('2', 'ether')
+        value: web3.utils.toWei('2', 'ether'),
       })
       const initialBalance = await web3.eth.getBalance(player)
       const initialPlayers = await lottery.methods.getPlayers().call({
-        from: managerAccount
+        from: managerAccount,
       })
       await lottery.methods.pickWinner().send({ from: managerAccount })
       const finalBalance = await web3.eth.getBalance(player)
       const finalPlayers = await lottery.methods.getPlayers().call({
-        from: managerAccount
+        from: managerAccount,
       })
       const difference = finalBalance - initialBalance
       assert.deepStrictEqual(initialPlayers.length, 2)
@@ -112,7 +113,7 @@ describe('Lottery contract', () => {
       try {
         await lottery.methods.enter().send({
           from: account,
-          value: web3.utils.toWei('0.001', 'ether')
+          value: web3.utils.toWei('0.001', 'ether'),
         })
         assert(false)
       } catch (e) {
@@ -123,7 +124,7 @@ describe('Lottery contract', () => {
       const account = accounts[1]
       try {
         await lottery.methods.pickWinner().send({
-          from: account
+          from: account,
         })
         assert(false)
       } catch (e) {
